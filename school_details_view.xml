@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="school_view" model="ir.ui.view">
+        <field name="name">school.form</field>
+        <field name="model">school.school</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="logo" widget="image" required="False"/>
+                    <group>
+                        <field name="name" placeholder="Enter School Name" required="True"/>
+                        <field name="tagline" placeholder="Enter Tagline" required="True"/>
+                        <field name="tags" placeholder="Enter Achivements" required="True"/>
+                        <field name="area" placeholder="Enter Area" required="True"/>
+                        <field name="city" placeholder="Enter City" required="True"/>
+                        <field name="State_id" placeholder="Enter State" required="True"/>
+                        <field name="Country_id" placeholder="Enter Country" required="True"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="school_tree" model="ir.ui.view">
+        <field name="name">school.tree</field>
+        <field name="model">school.school</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="tagline"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="school_search" model="ir.ui.view">
+        <field name="name">school.search</field>
+        <field name="model">school.school</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="tagline"/>
+                <group expand="0" string="Group By">
+                    <filter string="State" domain="[]" context="{'group_by':'State_id'}"/>
+                    <filter string="Country" domain="[]" context="{'group_by':'Country_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+     <record id="action_school_form" model="ir.actions.act_window">
+        <field name="name">School</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">school.school</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+    <menuitem name="School Management" id="menu_school_management"/>
+    <menuitem name="School" id="menu_school" action="action_school_form"
+              parent="menu_school_management" sequence="1"/>
+</odoo>

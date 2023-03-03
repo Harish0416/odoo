@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="admission_form_view" model="ir.ui.view">
+        <field name="name">admission.form</field>
+        <field name="model">school.admission.form</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_inprogress" string="Inprogress" type="object" class="oe_highlight"
+                        attrs="{'invisible': [('state','!=','draft')]}"/>
+                    <button name="action_validate" string="Validate" type="object" class="oe_highlight"
+                        attrs="{'invisible': [('state','!=','inprogress')]}"/>
+                    <button name="action_approve" string="Approve" type="object" class="oe_highlight"
+                        attrs="{'invisible': [('state','!=','validate')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,inprogress,validate,approved"/>
+                </header>
+                <sheet>
+                    <group string="ADMISSION FORM" class="text-center">
+                        <group></group>
+                        <group>
+                            <field name="date_time" placeholder="Date time" required="True"/>
+                        </group>
+                    </group>
+                    <group string="STUDENT DETAILS">
+                        <group>
+                            <field name="Student_Name"/>
+                            <field name="Last_Name"/>
+                            <field name="DOB"/>
+                            <field name="age" />
+                            <field name="Gender" widget="radio" class="oe_inline"/>
+                        </group>
+                        <group>
+                            <field name="Student_Image" widget="image" required="True"/>
+                        </group>
+                    </group>
+                    <group string="STUDENT ADRESS">
+                        <field name="Adress"/>
+                        <field name="Street1"/>
+                        <field name="Street2"/>
+                        <field name="City"/>
+                        <field name="State_id"/>
+                        <field name="Country_id"/>
+                        <field name="Pincode"/>
+                    </group>
+                    <group string="PARENT DETAILS" col="4">
+                        <field name="Parent_Name"/>
+                        <field name="Last_Name"/>
+                        <field name="Relation_To_Student" widget="radio" class="oe_inline"/>
+                        <field name="Telno"/>
+                        <field name="Email"/>
+                        <field name="Phnno"/>
+                    </group>
+                    <group string="SIBLING DETAILS">
+                        <field name="Siblings"/>
+                    </group>
+                    <group col="4">
+                            <field name="Sibling_Name" attrs="{'readonly' : [('Siblings','!=','yes')]}"/>
+                        <field name="Last_Name" attrs="{'readonly' : [('Siblings','!=','yes')]}"/>
+                        <field name="Sibling_Relation" widget="radio" class="oe_inline" attrs="{'readonly' : [('Siblings','!=','yes')]}"/>
+                        <field name="Sibling_Standard" attrs="{'readonly' : [('Siblings','!=','yes')]}"/>
+                    </group>
+                    <group string="PREVIOUS SCHOOL DETAILS">
+                        <field name="Previous_School_id"/>
+                        <field name="Marks_Obtained"/>
+                        <field name="Total_Marks"/>
+                        <field name="Percentage_Score"/>
+                        <field name="Certificates"/>
+                    </group>
+                    <group col="4">
+                        <field name="Parent_Sign"/>
+                        <field name="Student_Sign"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="admission_tree_view" model="ir.ui.view">
+        <field name="name">school.admission.tree</field>
+        <field name="model">school.admission.form</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="Student_Name"/>
+                <field name="Last_Name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="admission_search" model="ir.ui.view">
+        <field name="name">admission.search</field>
+        <field name="model">school.admission.form</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="Pincode"/>
+                <filter string="Male" domain="[('Gender','=','male')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="State" domain="[]" context="{'group_by':'State_id'}"/>
+                    <filter string="Country" domain="[]" context="{'group_by':'Country_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="admission_calendar" model="ir.ui.view">
+        <field name="name">admission.calendar</field>
+        <field name="model">school.admission.form</field>
+        <field name="arch" type="xml">
+            <calendar string="Admission Date" date_start="date_time"
+                      mode="month" color="Student_Name" quick_add="False">
+                <field name="Student_Name"/>
+                <field name="Parent_Name"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="admission_kanban" model="ir.ui.view">
+        <field name="name">admission.kanban</field>
+        <field name="model">school.admission.form</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div>
+                                    <b>Student :</b>
+                                    <field name="Student_Name"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <record id="action_admission_form" model="ir.actions.act_window">
+        <field name="name">School Admission</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">school.admission.form</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,search,calendar,kanban</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to fill the admission form.
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem name="Admission Form" id="menu_admission_from" action="action_admission_form"
+              parent="menu_school_management" sequence="3"/>
+
+</odoo>

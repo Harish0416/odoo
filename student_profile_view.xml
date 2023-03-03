@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="student_profile_form_view" model="ir.ui.view">
+        <field name="name">student.profile.form</field>
+        <field name="model">school.student.profile</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_inprogress" string="Inprogress" type="object" class="oe_highlight"
+                        attrs="{'invisible': [('state','!=','draft')]}"/>
+                    <button name="action_validate" string="Validate" type="object" class="oe_highlight"
+                        attrs="{'invisible': [('state','!=','inprogress')]}"/>
+                    <button name="action_approve" string="Approve" type="object" class="oe_highlight"
+                        attrs="{'invisible': [('state','!=','validate')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,inprogress,validate,approved"/>
+                </header>
+                <sheet>
+                    <group string="STUDENT PROFILE" class="text-center"></group>
+                    <group>
+                        <field name="date_time" placeholder="Date time" required="True"/>
+                    </group>
+                         <group string="STUDENT DETAILS">
+                        <group>
+                            <field name="Student_Name"/>
+                            <field name="Last_Name"/>
+                            <field name="DOB"/>
+                            <field name="age" />
+                            <field name="Gender" widget="radio" class="oe_inline"/>
+                        </group>
+                        <group>
+                            <field name="Student_Image" widget="image" required="True"/>
+                        </group>
+                    </group>
+                    <group string="STUDENT ADRESS">
+                        <field name="Adress"/>
+                        <field name="Street1"/>
+                        <field name="Street2"/>
+                        <field name="City"/>
+                        <field name="State_id"/>
+                        <field name="Country_id"/>
+                        <field name="Pincode"/>
+                    </group>
+                    <group string="PARENT DETAILS" col="4">
+                        <field name="Parent_Name"/>
+                        <field name="Last_Name"/>
+                        <field name="Relation_To_Student" widget="radio" class="oe_inline"/>
+                        <field name="Telno"/>
+                        <field name="Email"/>
+                        <field name="Phnno"/>
+                    </group>
+                        <group col="4">
+                        <field name="Parent_Sign"/>
+                        <field name="Student_Sign"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="student_profile_tree_view" model="ir.ui.view">
+        <field name="name">student.profile.tree</field>
+        <field name="model">school.student.profile</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="Student_Name"/>
+                <field name="Last_Name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_student_profile" model="ir.actions.act_window">
+        <field name="name">School Student Profile</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">school.student.profile</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to fill the student profile form.
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem name="Student Profile" id="menu_student_profile" action="action_student_profile"
+              parent="menu_school_management" sequence="4"/>
+
+ </odoo>
